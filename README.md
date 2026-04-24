@@ -1,69 +1,139 @@
-# Clima ☀️
+# 🌦 Clima iOS Weather App
 
-Clima is a simple iOS weather application built with **Swift** and **UIKit**.
-The app allows users to search weather by city name or get the current weather based on the device location.
+A modern iOS weather application built with **Swift** using clean architecture and the **MVVM pattern**.  
+The app provides real-time weather data with a clean UI and smooth user experience.
 
-## Features
+---
 
-• Search weather by city name
-• Get weather using current GPS location
-• OpenWeather API integration
-• JSON parsing using Codable
-• Dynamic UI updates
-• Weather condition icons
+## 📱 Demo
 
-## Tech Stack
+![App Demo](screenshot/ClimaDemo.gif)
 
-- Swift
-- UIKit
-- CoreLocation
-- URLSession
-- JSONDecoder
-- MVC Architecture
-- Git & GitHub
-- Xcode
+---
 
-## How it works
+## 🖼 Screenshots
 
-The application sends a network request to the **OpenWeather API**, receives weather data in JSON format, decodes it using `Codable`, and updates the UI with the temperature, weather condition, and city name.
+| Main Screen | Search |
+|------------|--------|
+| ![](screenshot/weatherscreen.png) | ![](screenshot/London.png) |
 
-## Project Structure
+---
+
+## 🚀 Features
+
+- 🌍 Search weather by city name
+- 📍 Get current location weather (CoreLocation)
+- 🌡 Display temperature and weather conditions
+- 🎨 Clean and minimal UI design
+- ⚡ Fast and efficient API requests
+- 🧠 Built using MVVM architecture
+
+---
+
+## 🛠 Tech Stack
+
+- **Swift**
+- **UIKit**
+- **CoreLocation**
+- **URLSession (REST API)**
+- **MVVM Architecture**
+- **Auto Layout**
+- **Git & GitHub**
+
+---
+
+## 🧩 Architecture
+
+The app follows the **MVVM (Model-View-ViewModel)** pattern:
+
+- `ViewController`  
+  Handles UI and user interactions  
+
+- `ViewModel`  
+  Contains business logic and data transformation  
+
+- `Model`  
+  Represents API data  
+
+- `WeatherService`  
+  Handles network requests  
+
+---
+
+## 🌐 API Integration
+
+- Fetches real-time weather data from a public weather API  
+- Uses **URLSession** and **Codable** for networking and parsing  
+
+---
+
+## 📂 Project Structure
+Clima
+
+
+```text
 
 Clima
-│
-├── Controller
-│   └── WeatherViewController.swift
-│
-├── Model
-│   ├── WeatherModel.swift
-│   ├── WeatherData.swift
-│   └── WeatherManager.swift
-│
+
+├── Controllers
+
+├── ViewModels
+
+├── Models
+
+├── Services
+
 ├── Resources
-│   └── Assets.xcassets
-│
-├── View
-│   └── Main.storyboard
-│
-└── AppDelegate / SceneDelegate
-## Setup
 
-1. Clone the repository
+└── screenshot
 
-git clone https://github.com/YOUR_USERNAME/Clima.git
+```
 
-2. Open the project in Xcode
+2. Run on simulator or real device
 
-3. Add your OpenWeather API key
+⸻
 
-Example:
+📚 What I Learned
 
-let apiKey = "YOUR_API_KEY"
+* Implementing MVVM architecture in a real app
+* Working with REST APIs using URLSession
+* Parsing JSON using Codable
+* Handling user location with CoreLocation
+* Building responsive UI using Auto Layout
+* Managing project structure and clean code practices
 
-4. Run the project on simulator or device
+⸻
 
+🎯 Why I Built This Project
 
-## Screenshots
+I built this project to strengthen my iOS development skills and gain hands-on experience with:
 
-<img src="screenshot.png" width="300">
+* Real-world API integration
+* Clean architecture (MVVM)
+* UI/UX implementation
+* Writing maintainable and scalable code
 
+⸻
+
+📌 Future Improvements
+
+* 🔔 Push notifications for weather updates
+* ⭐ Favorite cities feature
+* 🌍 Multiple saved locations
+* 📊 Detailed weather analytics
+* ⚙️ Migration to SwiftUI
+
+⸻
+
+👨‍💻 Author
+
+Aiaz
+
+* GitHub: https://github.com/swiftio116
+* LinkedIn: https://www.linkedin.com/in/aiaz-muzafarov-546a4a288
+
+⸻
+
+⭐️ Support
+
+If you like this project, give it a ⭐️ on GitHub!
