@@ -7,17 +7,29 @@ The app provides real-time weather data with a clean UI and smooth user experien
 
 ## 📱 Demo
 
-![App Demo](screenshot/ClimaDemo.gif)
+![Demo](screenshot/ClimaDemo.gif)
 
 ---
 
 ## 🖼 Screenshots
 
-| Main Screen | Search |
-|------------|--------|
-| ![](screenshot/weatherscreen.png) | ![](screenshot/London.png) |
+### 🌍 Different Cities
+
+| Kazan | London | Orlando |
+
+|------|--------|--------|
+
+| ![](screenshot/Kazan.png) | ![](screenshot/London.png) | ![](screenshot/Orlando.png) |
 
 ---
+
+### 📲 App Interface
+
+| Main Screen |
+
+|------------|
+
+| ![](screenshot/weatherscreen.png) |
 
 ## 🚀 Features
 
