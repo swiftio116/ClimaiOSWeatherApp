@@ -1,33 +1,48 @@
 import Foundation
+import CoreLocation
 
-struct WeatherModel {
-    let conditionId: Int
-    let cityName: String
-    let temperature: Double
+final class WeatherViewModel {
     
-    var temperatureString: String {
-        return String(format: "%.1f", temperature)
-    }
+    private let weatherService = WeatherService()
     
-    var conditionName: String {
-        switch conditionId {
-        case 200...232:
-            return "cloud.bolt"
-        case 300...321:
-            return "cloud.drizzle"
-        case 500...531:
-            return "cloud.rain"
-        case 600...622:
-            return "cloud.snow"
-        case 701...781:
-            return "cloud.fog"
-        case 800:
-            return "sun.max"
-        case 801...804:
-            return "cloud.bolt"
-        default:
-            return "cloud"
+    var onWeatherUpdate: ((WeatherModel) -> Void)?
+    var onError: ((String) -> Void)?
+    
+    func fetchWeather(for city: String) {
+        let trimmedCity = city.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedCity.isEmpty else {
+            onError?("Please enter a city name")
+            return
+        }
+        
+        weatherService.fetchWeather(city: trimmedCity) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self else { return }
+                
+                switch result {
+                case .success(let weatherData):
+                    let weather = WeatherModel(weatherData: weatherData)
+                    self.onWeatherUpdate?(weather)
+                case .failure(let error):
+                    self.onError?(error.localizedDescription)
+                }
+            }
         }
     }
     
+    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        weatherService.fetchWeather(latitude: latitude, longitude: longitude) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self else { return }
+                
+                switch result {
+                case .success(let weatherData):
+                    let weather = WeatherModel(weatherData: weatherData)
+                    self.onWeatherUpdate?(weather)
+                case .failure(let error):
+                    self.onError?(error.localizedDescription)
+                }
+            }
+        }
+    }
 }

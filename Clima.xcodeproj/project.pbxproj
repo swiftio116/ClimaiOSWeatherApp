@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		9B35AE922F60057200E9A04B /* screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B35AE912F60057200E9A04B /* screenshot.png */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXContainerItemProxy section */
 		9B35AE3D2F5F616200E9A04B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -32,7 +28,6 @@
 		9B35AE3C2F5F616200E9A04B /* ClimaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClimaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B35AE462F5F616200E9A04B /* ClimaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClimaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B35AE8F2F6001D500E9A04B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		9B35AE912F60057200E9A04B /* screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -99,7 +94,6 @@
 				9B35AE492F5F616200E9A04B /* ClimaUITests */,
 				9B35AE272F5F616100E9A04B /* Products */,
 				9B35AE8F2F6001D500E9A04B /* README.md */,
-				9B35AE912F60057200E9A04B /* screenshot.png */,
 			);
 			sourceTree = "<group>";
 		};
@@ -233,7 +227,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9B35AE922F60057200E9A04B /* screenshot.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

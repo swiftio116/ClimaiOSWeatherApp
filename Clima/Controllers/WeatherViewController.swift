@@ -1,99 +1,90 @@
 import UIKit
 import CoreLocation
 
-class WeatherViewController: UIViewController {
+final class WeatherViewController: UIViewController {
     
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var searchTextField: UITextField!
     
-    var weatherManager = WeatherManager()
-    let locationManager = CLLocationManager()
+    private let viewModel = WeatherViewModel()
+    private let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.requestLocation()
-        
-        weatherManager.delegate = self
         searchTextField.delegate = self
-    }
-
-}
-
-//MARK: - UITextFieldDelegate
-
-extension WeatherViewController: UITextFieldDelegate {
-    
-    @IBAction func searchPressed(_ sender: UIButton) {
-        searchTextField.endEditing(true)
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        searchTextField.endEditing(true)
-        return true
-    }
-    
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField.text != "" {
-            return true
-        } else {
-            textField.placeholder = "Type something"
-            return false
-        }
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
+        locationManager.delegate = self
         
-        if let city = searchTextField.text {
-            weatherManager.fetchWeather(cityName: city)
-        }
+        bindViewModel()
         
-        searchTextField.text = ""
-        
+        locationManager.requestWhenInUseAuthorization()
     }
-}
-
-//MARK: - WeatherManagerDelegate
-
-
-extension WeatherViewController: WeatherManagerDelegate {
     
-    func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
-        DispatchQueue.main.async {
+    private func bindViewModel() {
+        viewModel.onWeatherUpdate = { [weak self] weather in
+            guard let self else { return }
+            
             self.temperatureLabel.text = weather.temperatureString
             self.conditionImageView.image = UIImage(systemName: weather.conditionName)
             self.cityLabel.text = weather.cityName
         }
+        
+        viewModel.onError = { errorMessage in
+            print("ERROR:", errorMessage)
+        }
     }
     
-    func didFailWithError(error: Error) {
-        print(error)
+    @IBAction func searchPressed(_ sender: UIButton) {
+        let city = searchTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        guard !city.isEmpty else { return }
+        
+        viewModel.fetchWeather(for: city)
+        searchTextField.endEditing(true)
     }
-}
-
-//MARK: - CLLocationManagerDelegate
-
-
-extension WeatherViewController: CLLocationManagerDelegate {
     
     @IBAction func locationPressed(_ sender: UIButton) {
         locationManager.requestLocation()
     }
+}
+
+extension WeatherViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let city = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        guard !city.isEmpty else { return true }
+        
+        viewModel.fetchWeather(for: city)
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension WeatherViewController: CLLocationManagerDelegate {
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.last {
-            locationManager.stopUpdatingLocation()
-            let lat = location.coordinate.latitude
-            let lon = location.coordinate.longitude
-            weatherManager.fetchWeather(latitude: lat, longitude: lon)
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .authorizedWhenInUse, .authorizedAlways:
+            manager.requestLocation()
+        case .denied, .restricted:
+            print("Location access denied")
+        case .notDetermined:
+            break
+        @unknown default:
+            break
         }
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        
+        viewModel.fetchWeather(
+            latitude: location.coordinate.latitude,
+            longitude: location.coordinate.longitude
+        )
+    }
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error)
+        print("LOCATION ERROR:", error.localizedDescription)
     }
 }
