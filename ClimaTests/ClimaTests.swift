@@ -98,3 +98,21 @@ struct ClimaTests {
     
     #expect(sut.conditionName == "cloud")
 }
+
+@Test
+@MainActor
+func emptyCityShowsError() async throws {
+    
+    let mockService = MockWeatherService()
+    let viewModel = WeatherViewModel(weatherService: mockService)
+    
+    var receivedError: String?
+    
+    viewModel.onError = { error in
+        receivedError = error
+    }
+    
+    viewModel.fetchWeather(for: "   ")
+    
+    #expect(receivedError == "Please enter a city name")
+}
