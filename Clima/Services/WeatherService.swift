@@ -4,7 +4,7 @@ import CoreLocation
 final class WeatherService {
     
     private let baseURL = "https://api.openweathermap.org/data/2.5/weather"
-    private let apiKey = ""YOUR_API_KEY""
+    private let apiKey = "YOUR_API_KEY"
     
     func fetchWeather(city: String, completion: @escaping (Result<WeatherData, Error>) -> Void) {
         let cityQuery = city.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? city
