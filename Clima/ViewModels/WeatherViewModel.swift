@@ -3,8 +3,11 @@ import CoreLocation
 
 final class WeatherViewModel {
     
-    private let weatherService = WeatherService()
-    
+    private let weatherService: WeatherServicing
+
+    init(weatherService: WeatherServicing = WeatherService()) {
+        self.weatherService = weatherService
+    }
     var onWeatherUpdate: ((WeatherModel) -> Void)?
     var onError: ((String) -> Void)?
     
@@ -38,6 +41,7 @@ final class WeatherViewModel {
                 switch result {
                 case .success(let weatherData):
                     let weather = WeatherModel(weatherData: weatherData)
+                    self.onWeatherUpdate?(weather)
                     self.onWeatherUpdate?(weather)
                 case .failure(let error):
                     self.onError?(error.localizedDescription)

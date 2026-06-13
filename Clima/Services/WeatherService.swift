@@ -40,3 +40,4 @@ final class WeatherService {
         }.resume()
     }
 }
+extension WeatherService: WeatherServicing {}
