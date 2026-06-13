@@ -1,6 +1,6 @@
 # 🌦 Clima iOS Weather App
 
-A modern iOS weather application built with **Swift** using clean architecture and the **MVVM pattern**.  
+A modern iOS weather application built with **Swift**, **UIKit** and the **MVVM pattern**.
 The app provides real-time weather data with a clean UI and smooth user experience.
 
 ---
@@ -53,6 +53,23 @@ The app provides real-time weather data with a clean UI and smooth user experien
 - **Git & GitHub**
 
 ---
+## 🧪 Unit Tests
+
+The project includes unit tests for `WeatherModel`.
+
+Tests cover:
+
+- City name mapping from API response
+- Temperature mapping
+- Temperature formatting to one decimal place
+- Weather condition icon mapping
+- Clear weather condition
+- Rain condition
+- Snow condition
+- Fog condition
+- Unknown weather condition
+
+The tests help verify that the presentation model correctly transforms API data for the UI.
 
 ## 🧩 Architecture
 
