@@ -1,7 +1,8 @@
 # 🌦 Clima iOS Weather App
 
-A modern iOS weather application built with **Swift**, **UIKit** and the **MVVM pattern**.
-The app provides real-time weather data with a clean UI and smooth user experience.
+A modern iOS weather application built with **Swift**, **UIKit**, **MVVM architecture**, and **Dependency Injection**.
+
+The app provides real-time weather information using the OpenWeather API, supports current location weather lookup, and demonstrates MVVM architecture, dependency injection, unit testing, and service abstraction through protocols.
 
 ---
 
@@ -16,153 +17,163 @@ The app provides real-time weather data with a clean UI and smooth user experien
 ### 🌍 Different Cities
 
 | Kazan | London | Orlando |
-
-|------|--------|--------|
-
-| ![](screenshot/Kazan.png) | ![](screenshot/London.png) | ![](screenshot/Orlando.png) |
-
----
+|------|--------|---------|
+| ![Kazan](screenshot/Kazan.png) | ![London](screenshot/London.png) | ![Orlando](screenshot/Orlando.png) |
 
 ### 📲 App Interface
 
 | Main Screen |
-
 |------------|
+| ![Main Screen](screenshot/weatherscreen.png) |
 
-| ![](screenshot/weatherscreen.png) |
+---
 
 ## 🚀 Features
 
 - 🌍 Search weather by city name
-- 📍 Get current location weather (CoreLocation)
+- 📍 Get weather for the current device location
 - 🌡 Display temperature and weather conditions
-- 🎨 Clean and minimal UI design
-- ⚡ Fast and efficient API requests
-- 🧠 Built using MVVM architecture
+- ⚡ Real-time API integration
+- 🧠 MVVM architecture
+- 🔌 Dependency Injection using protocols
+- 🧪 Unit and UI testing
+- 🎨 Clean UIKit interface
+- 📱 Responsive Auto Layout
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Swift**
-- **UIKit**
-- **CoreLocation**
-- **URLSession (REST API)**
-- **MVVM Architecture**
-- **Auto Layout**
-- **Git & GitHub**
+- Swift
+- UIKit
+- CoreLocation
+- URLSession
+- Codable
+- MVVM
+- Dependency Injection
+- XCTest
+- UI Testing
+- Auto Layout
+- Git & GitHub
 
 ---
-## 🧪 Unit Tests
 
-The project includes unit tests for `WeatherModel`.
+## 🧪 Testing
 
-Tests cover:
+The project includes **9 Unit Tests** and **2 UI Tests**.
 
-- City name mapping from API response
+### Unit Tests
+
+#### WeatherModel Tests
+
+- City name mapping
 - Temperature mapping
-- Temperature formatting to one decimal place
-- Weather condition icon mapping
+- Temperature formatting
 - Clear weather condition
 - Rain condition
 - Snow condition
 - Fog condition
 - Unknown weather condition
 
-The tests help verify that the presentation model correctly transforms API data for the UI.
+#### WeatherViewModel Tests
+
+- Empty city validation and error handling
+
+### UI Tests
+
+- Application launch test
+- Launch performance verification
+
+The project uses **MockWeatherService** and dependency injection to improve testability and maintainability.
+
+---
 
 ## 🧩 Architecture
 
-The app follows the **MVVM (Model-View-ViewModel)** pattern:
+The project follows the **MVVM (Model-View-ViewModel)** pattern.
 
-- `ViewController`  
-  Handles UI and user interactions  
+### ViewController
 
-- `ViewModel`  
-  Contains business logic and data transformation  
+Responsible for UI rendering and user interactions.
 
-- `Model`  
-  Represents API data  
+### ViewModel
 
-- `WeatherService`  
-  Handles network requests  
+Contains presentation logic, validation, and communication with services.
+
+### Model
+
+Represents API response structures and presentation models.
+
+### Service Layer
+
+Responsible for networking and API communication.
+
+### Dependency Injection
+
+Services are injected through protocols:
+
+- `WeatherServicing`
+- `WeatherService`
+- `MockWeatherService`
+
+This allows ViewModels to be tested independently from networking code.
 
 ---
 
 ## 🌐 API Integration
 
-- Fetches real-time weather data from a public weather API  
-- Uses **URLSession** and **Codable** for networking and parsing  
+The application fetches real-time weather data from the OpenWeather API using:
+
+- URLSession
+- Codable
+- JSONDecoder
 
 ---
 
 ## 📂 Project Structure
-Clima
-
 
 ```text
-
 Clima
-
 ├── Controllers
-
 ├── ViewModels
-
 ├── Models
-
 ├── Services
-
 ├── Resources
+├── ClimaTests
+├── ClimaUITests
+└── Screenshot
 
-└── screenshot
-
-```
-
-2. Run on simulator or real device
-
-⸻
 
 📚 What I Learned
-
-* Implementing MVVM architecture in a real app
-* Working with REST APIs using URLSession
-* Parsing JSON using Codable
-* Handling user location with CoreLocation
-* Building responsive UI using Auto Layout
-* Managing project structure and clean code practices
-
-⸻
-
+MVVM architecture in UIKit applications
+Dependency Injection through protocols
+Building testable code using mocks
+REST API integration with URLSession
+JSON parsing with Codable
+Location services using CoreLocation
+Writing Unit Tests and UI Tests
+Auto Layout and responsive interfaces
+Git and GitHub workflow
 🎯 Why I Built This Project
 
-I built this project to strengthen my iOS development skills and gain hands-on experience with:
+This project was created to strengthen my iOS development skills and gain practical experience with:
 
-* Real-world API integration
-* Clean architecture (MVVM)
-* UI/UX implementation
-* Writing maintainable and scalable code
-
-⸻
-
+Real-world networking
+MVVM architecture
+Dependency Injection
+Testing strategies
+UIKit application development
+Working with REST APIs
 📌 Future Improvements
-
-* 🔔 Push notifications for weather updates
-* ⭐ Favorite cities feature
-* 🌍 Multiple saved locations
-* 📊 Detailed weather analytics
-* ⚙️ Migration to SwiftUI
-
-⸻
-
+🔔 Push notifications
+⭐ Favorite cities
+🌍 Multiple saved locations
+📅 5-day weather forecast
+⚡ Async/Await networking
+🎨 Migration to SwiftUI
 👨‍💻 Author
 
-Aiaz
+Aiaz Muzafarov
 
-* GitHub: https://github.com/swiftio116
-* LinkedIn: https://www.linkedin.com/in/aiaz-muzafarov-546a4a288
-
-⸻
-
-⭐️ Support
-
-If you like this project, give it a ⭐️ on GitHub!
+GitHub: swiftio116
+LinkedIn: Aiaz Muzafarov
