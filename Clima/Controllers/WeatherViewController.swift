@@ -8,8 +8,23 @@ final class WeatherViewController: UIViewController {
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var searchTextField: UITextField!
     
-    private let viewModel = WeatherViewModel()
-    private let locationManager = CLLocationManager()
+    private let viewModel: WeatherViewModel
+    private let locationManager: CLLocationManager
+    
+    init(
+        viewModel: WeatherViewModel = WeatherViewModel(weatherService: WeatherService()),
+        locationManager: CLLocationManager = CLLocationManager()
+    ) {
+        self.viewModel = viewModel
+        self.locationManager = locationManager
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.viewModel = WeatherViewModel(weatherService: WeatherService())
+        self.locationManager = CLLocationManager()
+        super.init(coder: coder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +33,6 @@ final class WeatherViewController: UIViewController {
         locationManager.delegate = self
         
         bindViewModel()
-        
         locationManager.requestWhenInUseAuthorization()
     }
     
@@ -38,6 +52,7 @@ final class WeatherViewController: UIViewController {
     
     @IBAction func searchPressed(_ sender: UIButton) {
         let city = searchTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        
         guard !city.isEmpty else { return }
         
         viewModel.fetchWeather(for: city)
@@ -48,43 +63,51 @@ final class WeatherViewController: UIViewController {
         locationManager.requestLocation()
     }
 }
-
 extension WeatherViewController: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        let city = textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        guard !city.isEmpty else { return true }
+        searchTextField.endEditing(true)
+        return true
+    }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        guard let text = textField.text,
+              !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            textField.placeholder = "Type something"
+            return false
+        }
+        
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let city = searchTextField.text else { return }
         
         viewModel.fetchWeather(for: city)
-        textField.resignFirstResponder()
-        return true
+        searchTextField.text = ""
     }
 }
 
 extension WeatherViewController: CLLocationManagerDelegate {
     
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
-        case .authorizedWhenInUse, .authorizedAlways:
-            manager.requestLocation()
-        case .denied, .restricted:
-            print("Location access denied")
-        case .notDetermined:
-            break
-        @unknown default:
-            break
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(
+        _ manager: CLLocationManager,
+        didUpdateLocations locations: [CLLocation]
+    ) {
         guard let location = locations.last else { return }
         
-        viewModel.fetchWeather(
-            latitude: location.coordinate.latitude,
-            longitude: location.coordinate.longitude
-        )
+        locationManager.stopUpdatingLocation()
+        
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        
+        viewModel.fetchWeather(latitude: latitude, longitude: longitude)
     }
     
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("LOCATION ERROR:", error.localizedDescription)
+    func locationManager(
+        _ manager: CLLocationManager,
+        didFailWithError error: Error
+    ) {
+        print("Location error:", error.localizedDescription)
     }
 }

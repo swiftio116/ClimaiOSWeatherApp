@@ -4,15 +4,17 @@ import CoreLocation
 final class WeatherViewModel {
     
     private let weatherService: WeatherServicing
-
-    init(weatherService: WeatherServicing = WeatherService()) {
-        self.weatherService = weatherService
-    }
+    
     var onWeatherUpdate: ((WeatherModel) -> Void)?
     var onError: ((String) -> Void)?
     
+    init(weatherService: WeatherServicing) {
+        self.weatherService = weatherService
+    }
+    
     func fetchWeather(for city: String) {
         let trimmedCity = city.trimmingCharacters(in: .whitespacesAndNewlines)
+        
         guard !trimmedCity.isEmpty else {
             onError?("Please enter a city name")
             return
@@ -26,6 +28,7 @@ final class WeatherViewModel {
                 case .success(let weatherData):
                     let weather = WeatherModel(weatherData: weatherData)
                     self.onWeatherUpdate?(weather)
+                    
                 case .failure(let error):
                     self.onError?(error.localizedDescription)
                 }
@@ -42,7 +45,7 @@ final class WeatherViewModel {
                 case .success(let weatherData):
                     let weather = WeatherModel(weatherData: weatherData)
                     self.onWeatherUpdate?(weather)
-                    self.onWeatherUpdate?(weather)
+                    
                 case .failure(let error):
                     self.onError?(error.localizedDescription)
                 }
