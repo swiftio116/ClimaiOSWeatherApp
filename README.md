@@ -1,8 +1,9 @@
+````markdown
 # 🌦 Clima iOS Weather App
 
-A modern iOS weather application built with **Swift**, **UIKit**, **MVVM architecture**, and **Dependency Injection**.
+A modern iOS weather application built with **Swift**, **UIKit**, **MVVM architecture**, **Dependency Injection**, and **Unit Testing**.
 
-The app provides real-time weather information using the OpenWeather API, supports current location weather lookup, and demonstrates MVVM architecture, dependency injection, unit testing, and service abstraction through protocols.
+The app provides real-time weather information using the [OpenWeather API](https://openweathermap.org/api), supports weather lookup by city name and current device location, and demonstrates service abstraction through protocols.
 
 ---
 
@@ -36,7 +37,7 @@ The app provides real-time weather information using the OpenWeather API, suppor
 - ⚡ Real-time API integration
 - 🧠 MVVM architecture
 - 🔌 Dependency Injection using protocols
-- 🧪 Unit and UI testing
+- 🧪 Unit testing with mock services
 - 🎨 Clean UIKit interface
 - 📱 Responsive Auto Layout
 
@@ -44,27 +45,75 @@ The app provides real-time weather information using the OpenWeather API, suppor
 
 ## 🛠 Tech Stack
 
-- Swift
-- UIKit
-- CoreLocation
-- URLSession
-- Codable
+- [Swift](https://www.swift.org/)
+- [UIKit](https://developer.apple.com/documentation/uikit)
+- [CoreLocation](https://developer.apple.com/documentation/corelocation)
+- [URLSession](https://developer.apple.com/documentation/foundation/urlsession)
+- [Codable](https://developer.apple.com/documentation/swift/codable)
 - MVVM
 - Dependency Injection
-- XCTest
-- UI Testing
+- [XCTest](https://developer.apple.com/documentation/xctest)
 - Auto Layout
 - Git & GitHub
 
 ---
 
-## 🧪 Testing
+## 🧩 Architecture
 
-The project includes **9 Unit Tests** and **2 UI Tests**.
+The project follows the **MVVM (Model-View-ViewModel)** pattern.
 
-### Unit Tests
+```text
+WeatherViewController
+        ↓
+WeatherViewModel
+        ↓
+WeatherServicing
+        ↓
+WeatherService
+```
 
-#### WeatherModel Tests
+### ViewController
+
+Responsible for UI rendering, user interactions, and location permissions.
+
+### ViewModel
+
+Contains presentation logic, input validation, and communication with the weather service.
+
+### Model
+
+Represents API response structures and UI-friendly weather data.
+
+### Service Layer
+
+Responsible for networking and API communication.
+
+---
+
+## 🔌 Dependency Injection
+
+`WeatherViewModel` depends on the `WeatherServicing` protocol instead of a concrete `WeatherService`.
+
+```swift
+init(weatherService: WeatherServicing) {
+    self.weatherService = weatherService
+}
+```
+
+This allows the app to use:
+
+- `WeatherService` in production
+- `MockWeatherService` in unit tests
+
+As a result, ViewModel logic can be tested without real network requests.
+
+---
+
+## 🧪 Unit Tests
+
+The project includes **15 Unit Tests**.
+
+### WeatherModel Tests
 
 - City name mapping
 - Temperature mapping
@@ -73,56 +122,24 @@ The project includes **9 Unit Tests** and **2 UI Tests**.
 - Rain condition
 - Snow condition
 - Fog condition
+- Thunderstorm condition
+- Drizzle condition
+- Cloudy condition
 - Unknown weather condition
 
-#### WeatherViewModel Tests
+### WeatherViewModel Tests
 
 - Empty city validation and error handling
+- Successful weather loading with `MockWeatherService`
+- Error handling with `MockWeatherService`
 
-### UI Tests
-
-- Application launch test
-- Launch performance verification
-
-The project uses **MockWeatherService** and dependency injection to improve testability and maintainability.
-
----
-
-## 🧩 Architecture
-
-The project follows the **MVVM (Model-View-ViewModel)** pattern.
-
-### ViewController
-
-Responsible for UI rendering and user interactions.
-
-### ViewModel
-
-Contains presentation logic, validation, and communication with services.
-
-### Model
-
-Represents API response structures and presentation models.
-
-### Service Layer
-
-Responsible for networking and API communication.
-
-### Dependency Injection
-
-Services are injected through protocols:
-
-- `WeatherServicing`
-- `WeatherService`
-- `MockWeatherService`
-
-This allows ViewModels to be tested independently from networking code.
+The project uses **MockWeatherService** and dependency injection to keep tests isolated from real API calls.
 
 ---
 
 ## 🌐 API Integration
 
-The application fetches real-time weather data from the OpenWeather API using:
+The application fetches real-time weather data from the [OpenWeather API](https://openweathermap.org/api) using:
 
 - URLSession
 - Codable
@@ -140,40 +157,66 @@ Clima
 ├── Services
 ├── Resources
 ├── ClimaTests
-├── ClimaUITests
-└── Screenshot
+└── screenshot
+```
 
+---
 
-📚 What I Learned
-MVVM architecture in UIKit applications
-Dependency Injection through protocols
-Building testable code using mocks
-REST API integration with URLSession
-JSON parsing with Codable
-Location services using CoreLocation
-Writing Unit Tests and UI Tests
-Auto Layout and responsive interfaces
-Git and GitHub workflow
-🎯 Why I Built This Project
+## ✅ Project Improvements
+
+- Refactored weather flow using Dependency Injection
+- Added `WeatherServicing` protocol
+- Added `MockWeatherService` for unit tests
+- Added additional unit tests for model and ViewModel logic
+- Added concise code documentation for key components
+- Removed `.DS_Store` files from Git
+- Updated `.gitignore` to prevent macOS service files from being committed
+
+---
+
+## 📚 What I Learned
+
+- MVVM architecture in UIKit applications
+- Dependency Injection through protocols
+- Building testable code using mocks
+- REST API integration with URLSession
+- JSON parsing with Codable
+- Location services using CoreLocation
+- Writing Unit Tests with XCTest
+- Auto Layout and responsive interfaces
+- Git and GitHub workflow
+
+---
+
+## 🎯 Why I Built This Project
 
 This project was created to strengthen my iOS development skills and gain practical experience with:
 
-Real-world networking
-MVVM architecture
-Dependency Injection
-Testing strategies
-UIKit application development
-Working with REST APIs
-📌 Future Improvements
-🔔 Push notifications
-⭐ Favorite cities
-🌍 Multiple saved locations
-📅 5-day weather forecast
-⚡ Async/Await networking
-🎨 Migration to SwiftUI
-👨‍💻 Author
+- Real-world networking
+- MVVM architecture
+- Dependency Injection
+- Testing ViewModel logic
+- UIKit application development
+- Working with REST APIs
 
-Aiaz Muzafarov
+---
 
-GitHub: swiftio116
-LinkedIn: Aiaz Muzafarov
+## 📌 Future Improvements
+
+- ⭐ Favorite cities
+- 🌍 Multiple saved locations
+- 📅 5-day weather forecast
+- ⚡ Async/Await networking
+- 🎨 Migration to SwiftUI
+- Better error presentation in UI
+- Loading state while fetching weather
+
+---
+
+## 👨‍💻 Author
+
+**Aiaz Muzafarov**
+
+- GitHub: [swiftio116](https://github.com/swiftio116)
+- LinkedIn: [Aiaz Muzafarov](https://www.linkedin.com/in/aiaz-muzafarov-546a4a288/)
+````
