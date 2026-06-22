@@ -116,3 +116,33 @@ func emptyCityShowsError() async throws {
     
     #expect(receivedError == "Please enter a city name")
 }
+@Test
+@MainActor
+func fetchWeatherWithMockServiceReturnsWeather() async {
+    // Given
+    let weatherData = WeatherData(
+        name: "Kazan",
+        main: Main(temp: 21.5),
+        weather: [Weather(id: 800, description: "clear sky")]
+    )
+    
+    let mockService = MockWeatherService()
+    mockService.result = .success(weatherData)
+    
+    let viewModel = WeatherViewModel(weatherService: mockService)
+    
+    // When
+    let receivedWeather = await withCheckedContinuation { continuation in
+        viewModel.onWeatherUpdate = { weather in
+            continuation.resume(returning: weather)
+        }
+        
+        viewModel.fetchWeather(for: "Kazan")
+    }
+    
+    // Then
+    #expect(receivedWeather.cityName == "Kazan")
+    #expect(receivedWeather.temperature == 21.5)
+    #expect(receivedWeather.temperatureString == "21.5")
+    #expect(receivedWeather.conditionName == "sun.max")
+}
