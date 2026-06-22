@@ -1,6 +1,7 @@
 import Foundation
 import CoreLocation
 @testable import Clima
+/// Mock implementation used to test weather flow without network requests.
 
 final class MockWeatherService: WeatherServicing {
     

@@ -1,6 +1,6 @@
 import Foundation
 import CoreLocation
-
+/// Handles weather screen logic and converts loaded data into UI-ready models.
 final class WeatherViewModel {
     
     private let weatherService: WeatherServicing
@@ -8,6 +8,8 @@ final class WeatherViewModel {
     var onWeatherUpdate: ((WeatherModel) -> Void)?
     var onError: ((String) -> Void)?
     
+    /// Injects a weather service to keep the view model testable.
+
     init(weatherService: WeatherServicing) {
         self.weatherService = weatherService
     }

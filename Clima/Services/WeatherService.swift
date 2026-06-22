@@ -1,6 +1,8 @@
 import Foundation
 import CoreLocation
 
+/// Concrete implementation of `WeatherServicing` that loads weather data
+/// from the OpenWeather API using `URLSession`.
 final class WeatherService {
     
     private let baseURL = "https://api.openweathermap.org/data/2.5/weather"
@@ -18,7 +20,11 @@ final class WeatherService {
         let urlString = "\(baseURL)?appid=\(apiKey)&units=metric&lat=\(latitude)&lon=\(longitude)"
         performRequest(urlString: urlString, completion: completion)
     }
-    
+    /// Performs a network request and decodes the response into `WeatherData`.
+    ///
+    /// - Parameters:
+    ///   - urlString: Full OpenWeather API URL string.
+    ///   - completion: Completion handler returning either decoded `WeatherData` or an error.
     private func performRequest(urlString: String,
                                 completion: @escaping (Result<WeatherData, Error>) -> Void) {
         guard let url = URL(string: urlString) else { return }

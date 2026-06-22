@@ -1,6 +1,8 @@
 import Foundation
-
-struct WeatherModel {
+/// UI-friendly weather model used by the weather screen.
+///
+/// Converts raw `WeatherData` from the API into values that are convenient
+/// for displaying city name, temperature, and SF Symbol condition icon.struct WeatherModel {
     let conditionId: Int
     let cityName: String
     let temperature: Double
@@ -10,11 +12,13 @@ struct WeatherModel {
         cityName = weatherData.name
         temperature = weatherData.main.temp
     }
-    
+    /// Returns formatted temperature text for displaying in the UI.
+
     var temperatureString: String {
         String(format: "%.1f", temperature)
     }
-    
+    /// Returns an SF Symbol name based on the OpenWeather condition id.
+
     var conditionName: String {
         switch conditionId {
         case 200...232:
