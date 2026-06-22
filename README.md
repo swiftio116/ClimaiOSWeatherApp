@@ -1,4 +1,3 @@
-````markdown
 # 🌦 Clima iOS Weather App
 
 A modern iOS weather application built with **Swift**, **UIKit**, **MVVM architecture**, **Dependency Injection**, and **Unit Testing**.
