@@ -1,7 +1,6 @@
 import Foundation
 import CoreLocation
 
-/// Handles weather screen logic and converts loaded data into UI-ready models.
 final class WeatherViewModel {
 
     var onWeatherUpdate: ((WeatherModel) -> Void)?
@@ -9,7 +8,6 @@ final class WeatherViewModel {
 
     private let weatherService: WeatherServicing
 
-    /// Injects a weather service to keep the view model testable.
     init(weatherService: WeatherServicing) {
         self.weatherService = weatherService
     }
@@ -23,34 +21,29 @@ final class WeatherViewModel {
         }
 
         weatherService.fetchWeather(city: trimmedCity) { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self else { return }
-
-                switch result {
-                case .success(let weatherData):
-                    let weather = WeatherModel(weatherData: weatherData)
-                    self.onWeatherUpdate?(weather)
-
-                case .failure(let error):
-                    self.onError?(error.localizedDescription)
-                }
-            }
+            self?.handleResult(result)
         }
     }
 
-    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+    func fetchWeather(
+        latitude: CLLocationDegrees,
+        longitude: CLLocationDegrees
+    ) {
         weatherService.fetchWeather(latitude: latitude, longitude: longitude) { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self else { return }
+            self?.handleResult(result)
+        }
+    }
 
-                switch result {
-                case .success(let weatherData):
-                    let weather = WeatherModel(weatherData: weatherData)
-                    self.onWeatherUpdate?(weather)
+    // Converts service result to UI model.
+    private func handleResult(_ result: Result<WeatherData, Error>) {
+        DispatchQueue.main.async {
+            switch result {
+            case .success(let weatherData):
+                let weather = WeatherModel(weatherData: weatherData)
+                self.onWeatherUpdate?(weather)
 
-                case .failure(let error):
-                    self.onError?(error.localizedDescription)
-                }
+            case .failure(let error):
+                self.onError?(error.localizedDescription)
             }
         }
     }

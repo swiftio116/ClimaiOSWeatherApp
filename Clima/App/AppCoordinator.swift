@@ -1,7 +1,6 @@
 import UIKit
 import CoreLocation
 
-/// Creates the app flow and injects dependencies into screens.
 final class AppCoordinator {
 
     private let window: UIWindow
@@ -20,6 +19,7 @@ final class AppCoordinator {
             locationManager: locationManager
         )
 
+        // Sets the first screen.
         window.rootViewController = weatherViewController
         window.makeKeyAndVisible()
     }
